@@ -8,16 +8,22 @@
 
     <title>Conrona Sumolation</title>
 </head>
-<body style="overflow: hidden; " >
+<body style="overflow: hidden;" >
 <div id="toolbar">
-        <app-sick :empty_arr="empty_arr" v-for="arr in empty_arr"></app-sick>
+    <div class="input-group ">
+        <button class="btn btn-primary" id="start">Start</button>
+        <button class="btn btn-danger" id="stop">Stop</button>
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Speed</span>
+        </div>
+        <input type="number" value="250" id="speed" >
+    </div>
 
-    <button id="start">Start</button>
-    <button id="stop">Stop</button>
-    <input type="number" value="250" id="speed" />
-
-                        <img id='a' class="rounded-circle" src="https://via.placeholder.com/20/FF0000" />
-                        <img id='b' class="rounded-circle" src="https://via.placeholder.com/20/FF0000" />
+     <div class="container">
+            <app-healthy :empty_arr="empty_arr" v-for="(arr,key)  in empty_arr" :key="key"></app-healthy>
+            <app-sick touch="touch"></app-sick>
+            <app-sick touch="touch"></app-sick>
+     </div>
 
 </div>
 
@@ -131,53 +137,31 @@
     var x = new RandomObjectMover(document.getElementById('a'), window);
 
 
-        // Toolbar stuff
-        document.getElementById('start').addEventListener('click', function () {
-            x.start();
-        });
-        document.getElementById('stop').addEventListener('click', function () {
-            x.stop();
-        });
-        document.getElementById('speed').addEventListener('keyup', function () {
-            if (parseInt(this.value) > 3000) {
-                alert('حبس المرقة');
-                this.value = 250;
-            }
-            x.setSpeed(parseInt(this.value));
-        });
-        // Start it off
-        x.start();
+        // // Toolbar stuff
+        // document.getElementById('start').addEventListener('click', function () {
+        //     x.start();
+        // });
+        // document.getElementById('stop').addEventListener('click', function () {
+        //     x.stop();
+        // });
+        // document.getElementById('speed').addEventListener('keyup', function () {
+        //     if (parseInt(this.value) > 3000) {
+        //         alert('حبس المرقة');
+        //         this.value = 250;
+        //     }
+        //     x.setSpeed(parseInt(this.value));
+        // });
+        // // Start it off
+        // x.start();
 
-
-
-
-
-
-    var y = new RandomObjectMover(document.getElementById('b'), window);
-
-
-    // Toolbar stuff
-    document.getElementById('start').addEventListener('click', function () {
-        y.start();
-    });
-    document.getElementById('stop').addEventListener('click', function () {
-        y.stop();
-    });
-    document.getElementById('speed').addEventListener('keyup', function () {
-        if (parseInt(this.value) > 3000) {
-            alert('حبس المرقة');
-            this.value = 250;
-        }
-        y.setSpeed(parseInt(this.value));
-    });
-    // Start it off
-    y.start();
 
     var test = function(){
         alert('hbhbhb');
     }
+
+    //Healthy persons Component
     
-    Vue.component('app-sick',{
+    Vue.component('app-healthy',{
         data: function(){
 
             return {
@@ -191,7 +175,7 @@
             }
         },
         mounted:function(){
-            var z = new RandomObjectMover(this.$refs.sick1, window);
+            var z = new RandomObjectMover(this.$refs.healty, window);
 
 
             // Toolbar stuff
@@ -211,23 +195,84 @@
             // Start it off
             z.start();
         },
-        template:`<img ref="sick1" @click="testament($event)" class="rounded-circle" src="https://via.placeholder.com/20/41b883" style="transition: transform 0.41s linear 0s; transform: translate3d(646px, 108px, 0px);"/>`
+        template:`<img ref="healty" @click="testament($event)" class="rounded-circle" src="https://via.placeholder.com/20/41b883" style="transition: transform 0.41s linear 0s; transform: translate3d(646px, 108px, 0px);"/>`
 
     });
+
+    //Sick persons Component
+
+    Vue.component('app-sick', {
+        data: function () {
+
+            return {
+                a:this.touch,
+            };
+        },
+        props: ["touch"],
+        methods: {
+            testament: function ($event) {
+                return $event.target;
+            }
+        },
+        mounted: function () {
+            var z = new RandomObjectMover(this.$refs.sick, window);
+
+
+            // Toolbar stuff
+            document.getElementById('start').addEventListener('click', function () {
+                z.start();
+            });
+            document.getElementById('stop').addEventListener('click', function () {
+                z.stop();
+            });
+            document.getElementById('speed').addEventListener('keyup', function () {
+                if (parseInt(this.value) > 3000) {
+                    alert('حبس المرقة');
+                    this.value = 250;
+                }
+                z.setSpeed(parseInt(this.value));
+            });
+            // Start it off
+            z.start();
+        },
+        watch:{
+                touch:function(data){
+                    console.log(this.a);
+                }
+            },
+            mounted:function(){
+                console.log(this.a);
+            },
+        template: `<img ref="sick" @click="testament($event)" class="rounded-circle" src="https://via.placeholder.com/20/FF0000" style="transition: transform 0.41s linear 0s; transform: translate3d(646px, 108px, 0px);"/>`
+
+    });
+
 
         new Vue({
             el:"#toolbar",
             data:{
                 empty_arr:[],
-                length:100
+                length:5,
+                touch:null
             },
             mounted :function(){
                 for (let i = 0; i < this.length; i++)
                 {
                     this.empty_arr.push(i);
                 }
+              
+            },
+            watch:{
+                touch:function(data){
+                    console.log(data);
+                }
+            }
+            ,
+            beforeUpdate: function () {
+            console.log(this.$slots)
             }
         });
+          console.log(Vue.options.components);
     </script>
 </body>
 </html>
