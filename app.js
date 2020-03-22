@@ -1,9 +1,5 @@
-  // function getY(min = document.getElementById('app').getBoundingClientRect().y, max =document.getElementById('app').getBoundingClientRect().height) {
-        //         return Math.floor(Math.random() * (max - min + 1)) + min;
-        //     }
-        // function getX(min = document.getElementById('app').getBoundingClientRect().x, max = document.getElementById('app').getBoundingClientRect().width) {
-        //         return Math.floor(Math.random() * (max - min + 1)) + min;
-        //     }
+
+    //  Create randomOBJ
 
     function RandomObjectMover(obj, container) {
         this.$object = obj;
@@ -58,7 +54,6 @@
 
         // Speed of this transition, rounded to 2DP
         var speed = Math.round((delta / this.pixels_per_second) * 100) / 100;
-        // console.log(this.current_position);
 
         this.$object.style.transition = 'transform ' + speed + 's linear';
         this.$object.style.transform = 'translate3d(' + next.x + 'px, ' + next.y + 'px, 0)';
@@ -102,33 +97,6 @@
         this.is_running = false;
     }
 
-
-    // Init it
-    // var x = new RandomObjectMover(document.getElementById('a'), window);
-
-
-        // // Toolbar stuff
-        // document.getElementById('start').addEventListener('click', function () {
-        //     x.start();
-        // });
-        // document.getElementById('stop').addEventListener('click', function () {
-        //     x.stop();
-        // });
-        // document.getElementById('speed').addEventListener('keyup', function () {
-        //     if (parseInt(this.value) > 3000) {
-        //         alert('حبس المرقة');
-        //         this.value = 250;
-        //     }
-        //     x.setSpeed(parseInt(this.value));
-        // });
-        // // Start it off
-        // x.start();
-
-
-    var test = function(){
-        alert('hbhbhb');
-    }
-
     //Healthy persons Component
 
     let AppHealthy = {
@@ -136,7 +104,7 @@
 
                 return {
                     this_obj: this.arr,
-                    that : {}
+                    that_ob : {}
                 };
             },
             props: {
@@ -168,8 +136,7 @@
                 });
                 // Start it off
                 z.start();
-                this.arr=this.$refs.healty;
-                console.log(this.arr);
+                this.that_ob=this.$refs.healty;
             },
 
             template: `<img ref="healty" @click="testament($event)" class="healthy rounded-circle" style="transition: transform 0.41s linear 0s; transform: translate3d(646px, 108px, 0px);"/>`
@@ -223,9 +190,8 @@
             el:"#toolbar",
             data:{
                 empty_arr: [],
-                length:50,
-                zeropatient : 0,
-                controle: document.images
+                length:perosnsLength,
+                zeropatient : 0
             },
             mounted :function(){
                 for (let i = 1; i < this.length; i++)
@@ -238,12 +204,10 @@
             watch:{
                 empty_arr:function(){
                     this.empty_arr.forEach((item)=>{
+                        //check Item References Obj
                         console.log(item);
                     });
                 },
-                controle:function(){
-                    console.log(document.images);
-                }
             },
             components:{
                 'app-sick':AppSick,
@@ -253,7 +217,7 @@
 
 
 
-
+        //Start watching Each obj State{connecte with patient , get; set; infection}
         async function startWatch(person,delta){
             for (let personLazy of document.images) {
                         await look(personLazy,person,delta);
@@ -261,6 +225,7 @@
         }
 
 
+        //Obtain lines coordinate formula for calculate intersection's point
         async function look (personLazy,person,delta){
             let pz = personLazy.getBoundingClientRect();
             let pzT= personLazy.style.transform.match(/(-?[0-9\.]+)/g);
@@ -274,14 +239,15 @@
         }
 
 
-    function intersects(a,b,c,d,p,q,r,s) {
-        var det, gamma, lambda;
-        det = (c - a) * (s - q) - (r - p) * (d - b);
-        if (det === 0) {
-            return false;
-        } else {
-            lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
-            gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
-            return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
-        }
-    };
+        //Calculate Line–line intersection and return boolean value of TRUE if two OBJ two lines intersect
+        function intersects(a,b,c,d,p,q,r,s) {
+            var det, gamma, lambda;
+            det = (c - a) * (s - q) - (r - p) * (d - b);
+            if (det === 0) {
+                return false;
+            } else {
+                lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+                gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+                return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+            }
+        };

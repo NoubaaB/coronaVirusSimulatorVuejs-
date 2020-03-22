@@ -34,14 +34,18 @@
     </div>
 
      <div class="container">
-            <app-healthy :empty_arr="empty_arr" v-for="(arr,key)  in empty_arr" :arr="arr" :key="key" v-if="key >= 1" ></app-healthy>
+            <app-healthy  :empty_arr="empty_arr" v-for="(arr,key)  in empty_arr" :arr="arr" :key="key" v-if="key >= 1" ></app-healthy>
         <!--IF u remove <app-sick></app-sick> template , no one get sick-->
-            <app-sick :zeropatient="zeropatient" ></app-sick>
+            <app-sick   :zeropatient="zeropatient" ></app-sick>
      </div>
 
 </div>
 
 
+    <script>
+        //ADD persons length you want to simulate
+        let perosnsLength=5;
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script  src="app.js" defer ></script>
 </body>
