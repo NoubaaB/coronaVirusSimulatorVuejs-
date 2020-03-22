@@ -7,6 +7,20 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>Conrona Sumolation</title>
+    <style>
+        img.sick {
+        width: 19px;
+        height:19px;
+        background-color:red;
+        position:absolute;
+        }
+        img.healthy {
+        width: 19px;
+        height:19px;
+        background-color:green;
+        position:absolute;
+        }
+    </style>
 </head>
 <body style="overflow: hidden;" >
 <div id="toolbar">
@@ -20,9 +34,8 @@
     </div>
 
      <div class="container">
-            <app-healthy :empty_arr="empty_arr" v-for="(arr,key)  in empty_arr" :key="key"></app-healthy>
-            <app-sick touch="touch"></app-sick>
-            <app-sick touch="touch"></app-sick>
+            <app-healthy :empty_arr="empty_arr" v-for="(arr,key)  in empty_arr" :arr="arr" :key="key" v-if="key >= 1" ></app-healthy>
+            <app-sick :zeropatient="zeropatient"  ></app-sick>
      </div>
 
 </div>
@@ -76,6 +89,7 @@
     RandomObjectMover.prototype._calcDelta = function (a, b) {
         var dx = a.x - b.x;
         var dy = a.y - b.y;
+
         var dist = Math.sqrt(dx * dx + dy * dy);
         return dist;
     }
@@ -89,12 +103,13 @@
 
         // Speed of this transition, rounded to 2DP
         var speed = Math.round((delta / this.pixels_per_second) * 100) / 100;
-
-        //console.log(this.current_position, next, delta, speed);
+        // console.log(this.current_position);
 
         this.$object.style.transition = 'transform ' + speed + 's linear';
         this.$object.style.transform = 'translate3d(' + next.x + 'px, ' + next.y + 'px, 0)';
-
+        setTimeout(()=>{
+            startWatch(this.$object,((delta/speed)*(next.x/next.y))*(delta/speed));
+        },2000);
         // Save this new position ready for the next call.
         this.current_position = next;
 
@@ -134,7 +149,7 @@
 
 
     // Init it
-    var x = new RandomObjectMover(document.getElementById('a'), window);
+    // var x = new RandomObjectMover(document.getElementById('a'), window);
 
 
         // // Toolbar stuff
@@ -160,62 +175,69 @@
     }
 
     //Healthy persons Component
-    
-    Vue.component('app-healthy',{
-        data: function(){
 
-            return {
-                
-            };
-        },
-        props:["empty_arr"],
-        methods:{
-            testament:function($event){
-                return $event.target;
-            }
-        },
-        mounted:function(){
-            var z = new RandomObjectMover(this.$refs.healty, window);
+    let AppHealthy = {
+            data: function () {
 
-
-            // Toolbar stuff
-            document.getElementById('start').addEventListener('click', function () {
-                z.start();
-            });
-            document.getElementById('stop').addEventListener('click', function () {
-                z.stop();
-            });
-            document.getElementById('speed').addEventListener('keyup', function () {
-                if (parseInt(this.value) > 3000) {
-                    alert('حبس المرقة');
-                    this.value = 250;
+                return {
+                    this_obj: this.arr,
+                    that : {}
+                };
+            },
+            props: {
+                arr: Array,
+                empty_arr : Array
+            },
+            methods: {
+                testament: function ($event) {
+                    return $event.target;
                 }
-                z.setSpeed(parseInt(this.value));
-            });
-            // Start it off
-            z.start();
-        },
-        template:`<img ref="healty" @click="testament($event)" class="rounded-circle" src="https://via.placeholder.com/20/41b883" style="transition: transform 0.41s linear 0s; transform: translate3d(646px, 108px, 0px);"/>`
+            },
+            mounted: function () {
+                let z = new RandomObjectMover(this.$refs.healty, window);
 
-    });
+
+                // Toolbar stuff
+                document.getElementById('start').addEventListener('click', function () {
+                    z.start();
+                });
+                document.getElementById('stop').addEventListener('click', function () {
+                    z.stop();
+                });
+                document.getElementById('speed').addEventListener('keyup', function () {
+                    if (parseInt(this.value) > 3000) {
+                        alert('حبس المرقة');
+                        this.value = 250;
+                    }
+                    z.setSpeed(parseInt(this.value));
+                });
+                // Start it off
+                z.start();
+                this.arr=this.$refs.healty;
+                console.log(this.arr);
+            },
+
+            template: `<img ref="healty" @click="testament($event)" class="healthy rounded-circle" style="transition: transform 0.41s linear 0s; transform: translate3d(646px, 108px, 0px);"/>`
+
+        }
 
     //Sick persons Component
 
-    Vue.component('app-sick', {
+     let AppSick = {
         data: function () {
 
             return {
-                a:this.touch,
+                this_obj:this.zeropatient,
             };
         },
-        props: ["touch"],
+        props: [ "zeropatient"],
         methods: {
             testament: function ($event) {
                 return $event.target;
             }
         },
         mounted: function () {
-            var z = new RandomObjectMover(this.$refs.sick, window);
+            let z = new RandomObjectMover(this.$refs.sick, window);
 
 
             // Toolbar stuff
@@ -234,45 +256,81 @@
             });
             // Start it off
             z.start();
+            this.arr=this.$refs.sick;
+            console.log(this.arr);
         },
-        watch:{
-                touch:function(data){
-                    console.log(this.a);
-                }
-            },
-            mounted:function(){
-                console.log(this.a);
-            },
-        template: `<img ref="sick" @click="testament($event)" class="rounded-circle" src="https://via.placeholder.com/20/FF0000" style="transition: transform 0.41s linear 0s; transform: translate3d(646px, 108px, 0px);"/>`
+        template: `<img ref="sick" @click="testament($event)" class=" sick rounded-circle"  style="transition: transform 0.41s linear 0s; transform: translate3d(646px, 108px, 0px);"/>`
 
-    });
+    };
 
 
         new Vue({
             el:"#toolbar",
             data:{
-                empty_arr:[],
-                length:5,
-                touch:null
+                empty_arr: [],
+                length:50,
+                zeropatient : 0,
+                controle: document.images
             },
             mounted :function(){
-                for (let i = 0; i < this.length; i++)
+                for (let i = 1; i < this.length; i++)
                 {
-                    this.empty_arr.push(i);
+                    this.empty_arr.push([]);
                 }
-              
+                this.zeropatient=this.empty_arr[0];
+
             },
             watch:{
-                touch:function(data){
-                    console.log(data);
+                empty_arr:function(){
+                    this.empty_arr.forEach((item)=>{
+                        console.log(item);
+                    });
+                },
+                controle:function(){
+                    console.log(document.images);
                 }
-            }
-            ,
-            beforeUpdate: function () {
-            console.log(this.$slots)
-            }
+            },
+            components:{
+                'app-sick':AppSick,
+                'app-healthy': AppHealthy
+                }
         });
-          console.log(Vue.options.components);
+
+
+
+
+        async function startWatch(person,delta){
+            for (let personLazy of document.images) {
+                        await look(personLazy,person,delta);
+                    }
+        }
+
+
+        async function look (personLazy,person,delta){
+            let pz = personLazy.getBoundingClientRect();
+            let pzT= personLazy.style.transform.match(/(-?[0-9\.]+)/g);
+            let pfT = person.style.transform.match(/(-?[0-9\.]+)/g);
+              if(intersects(pz.x,pz.y,pzT[0],pzT[1]  , person.x,person.y,pfT[0],pfT[1] )) {
+                    setTimeout(()=>{
+                            person.classList.remove('healthy');
+                            person.classList.add('sick');
+                    },delta);
+                }
+                console.log(delta);
+        }
+
+
+    function intersects(a,b,c,d,p,q,r,s) {
+        var det, gamma, lambda;
+        det = (c - a) * (s - q) - (r - p) * (d - b);
+        if (det === 0) {
+            return false;
+        } else {
+            lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+            gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+            return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+        }
+    };
     </script>
 </body>
 </html>
