@@ -35,7 +35,8 @@
 
      <div class="container">
             <app-healthy :empty_arr="empty_arr" v-for="(arr,key)  in empty_arr" :arr="arr" :key="key" v-if="key >= 1" ></app-healthy>
-            <app-sick :zeropatient="zeropatient"  ></app-sick>
+        <!--IF u remove <app-sick></app-sick> template , no one get sick-->
+            <app-sick :zeropatient="zeropatient" ></app-sick>
      </div>
 
 </div>
