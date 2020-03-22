@@ -8,6 +8,7 @@
         this.pixels_per_second = 250;
         this.current_position = { x: 0, y: 0 };
         this.is_running = false;
+        this.isInfected = true;
     }
 
     // Set the speed of movement in Pixels per Second.
@@ -45,6 +46,13 @@
         return dist;
     }
 
+    RandomObjectMover.prototype._isInfected = function(n){
+        this.isInfected = n;
+    }
+    RandomObjectMover.prototype._isInfected = function(){
+        return this.isInfected ;
+    }
+
     RandomObjectMover.prototype._moveOnce = function () {
         // Pick a new spot on the page
         var next = this._generateNewPosition();
@@ -58,7 +66,7 @@
         this.$object.style.transition = 'transform ' + speed + 's linear';
         this.$object.style.transform = 'translate3d(' + next.x + 'px, ' + next.y + 'px, 0)';
         setTimeout(()=>{
-            startWatch(this.$object,((delta/speed)*(next.x/next.y))*(delta/speed));
+            startWatch(this,this.$object,((delta/speed)*(next.x/next.y))*(delta/speed));
         },2000);
         // Save this new position ready for the next call.
         this.current_position = next;
@@ -218,10 +226,13 @@
 
 
         //Start watching Each obj State{connecte with patient , get; set; infection}
-        async function startWatch(person,delta){
-            for (let personLazy of document.images) {
-                        await look(personLazy,person,delta);
-                    }
+        async function startWatch(that,person,delta){
+            if(that._isInfected()){
+                that._isInfected(false);
+                for (let personLazy of document.images) {
+                            await look(personLazy,person,delta);
+                        }
+            }
         }
 
 
