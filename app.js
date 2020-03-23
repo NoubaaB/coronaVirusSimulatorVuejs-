@@ -198,16 +198,26 @@
             el:"#toolbar",
             data:{
                 empty_arr: [],
-                personsLength:3,
+                personsLength:2,
                 zeropatient : 0
             },
-            mounted :function(){
-                for (let i = 1; i < this.personsLength; i++)
-                {
-                    this.empty_arr.push([]);
-                }
-                this.zeropatient=this.empty_arr[0];
+            methods: {
+                start: function (){
+                    for (let i = 1; i <= this.personsLength + 1; i++) {
+                        this.empty_arr.push([]);
+                    }
+                    this.zeropatient = this.empty_arr[0];
+                },
+                addNewPersons: function (val) {
 
+                    for (let i = 1; i <= val ; i++) {
+                        this.empty_arr.push([]);
+                    }
+                    this.zeropatient = this.empty_arr[0];
+                }
+            },
+            mounted :function(){
+                this.start();
             },
             watch:{
                 empty_arr:function(){
@@ -217,10 +227,8 @@
                     });
                 },
                 personsLength: function (val) {
-                    for (let i = 1; i <= this.personsLength; i++) {
-                        this.empty_arr.push([]);
-                    }
-                    this.zeropatient = this.empty_arr[0];
+                    console.log(val);
+                    this.addNewPersons(val);
                 }
             },
             components:{
