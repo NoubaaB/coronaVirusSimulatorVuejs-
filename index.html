@@ -31,6 +31,10 @@
             <span class="input-group-text" id="inputGroup-sizing-sm">Speed</span>
         </div>
         <input type="number" value="250" id="speed" >
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="peronse">Perosns length</span>
+        </div>
+        <input type="number" v-model="personsLength" >
     </div>
 
      <div class="container">
@@ -44,7 +48,6 @@
 
     <script>
         //ADD persons length you want to simulate
-        let perosnsLength=50;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script  src="app.js" defer ></script>

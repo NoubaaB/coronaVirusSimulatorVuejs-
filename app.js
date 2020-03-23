@@ -198,11 +198,11 @@
             el:"#toolbar",
             data:{
                 empty_arr: [],
-                length:perosnsLength,
+                personsLength:3,
                 zeropatient : 0
             },
             mounted :function(){
-                for (let i = 1; i < this.length; i++)
+                for (let i = 1; i < this.personsLength; i++)
                 {
                     this.empty_arr.push([]);
                 }
@@ -216,6 +216,12 @@
                         console.log(item);
                     });
                 },
+                personsLength: function (val) {
+                    for (let i = 1; i <= this.personsLength; i++) {
+                        this.empty_arr.push([]);
+                    }
+                    this.zeropatient = this.empty_arr[0];
+                }
             },
             components:{
                 'app-sick':AppSick,
