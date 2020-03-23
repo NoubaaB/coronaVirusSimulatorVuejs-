@@ -35,6 +35,15 @@
             <span class="input-group-text" id="peronse">Add new Healthy Perosns</span>
         </div>
         <input type="number" v-model="personsLength" >
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="healthyP">Number of Healthy Perosns : </span>
+        </div>
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="sickP">Number of Sick Perosns : </span>
+        </div>
+        <div class="input-group-prepend">
+            <span class="input-group-text" >Total Perosns : {{empty_arr.length}} </span>
+        </div>
     </div>
 
      <div class="container">
@@ -48,7 +57,7 @@
 
     <script>
         //ADD persons length you want to simulate
-        let HealthyPersonsLength = 50;
+        let HealthyPersonsLength = 2;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script  src="app.js" defer ></script>

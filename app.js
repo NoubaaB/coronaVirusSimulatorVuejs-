@@ -193,13 +193,14 @@
 
     };
 
-
+        //Start Vue init
+        
         new Vue({
             el:"#toolbar",
             data:{
                 empty_arr: [],
                 personsLength: HealthyPersonsLength,
-                zeropatient : 0
+                zeropatient : 0,
             },
             methods: {
                 start: function (){
@@ -210,14 +211,20 @@
                 },
                 addNewPersons: function (val) {
 
-                    for (let i = 1; i <= val ; i++) {
+                    for (let i = 1; i <= +(val) ; i++) {
                         this.empty_arr.push([]);
                     }
                     this.zeropatient = this.empty_arr[0];
+                    setTimeout(() => {
+                        updateInfo();
+                    }, 200);
                 }
             },
             mounted :function(){
                 this.start();
+                setTimeout(() => {
+                    updateInfo();
+                }, 200);
             },
             watch:{
                 empty_arr:function(){
@@ -227,7 +234,6 @@
                     });
                 },
                 personsLength: function (val) {
-                    console.log(val);
                     this.addNewPersons(val);
                 }
             },
@@ -237,15 +243,22 @@
                 }
         });
 
-
-
+        //Update Persons Info
+        function updateInfo() {
+            document.getElementById('sickP').innerText = `Number of Sick Perosns : ${document.getElementsByClassName('sick').length}`;
+            document.getElementById('healthyP').innerText = `Number of Healthy Perosns : ${document.getElementsByClassName('healthy').length}`;
+        }
+        
+        
         //Start watching Each obj State{connecte with patient , get; set; infection}
-        async function startWatch(that,person,delta){
-            if(that._isInfected()){
-                that._isInfected(false);
-                for (let personLazy of document.images) {
-                            await look(personLazy,person,delta);
-                        }
+        async function startWatch(that, person, delta) {
+            if (document.getElementsByClassName('healthy').length!=0) {
+                if(that._isInfected()){
+                    that._isInfected(false);
+                    for (let personLazy of document.images) {
+                        await look(personLazy,person,delta);
+                    }
+                }       
             }
         }
 
@@ -256,10 +269,12 @@
             let pzT= personLazy.style.transform.match(/(-?[0-9\.]+)/g);
             let pfT = person.style.transform.match(/(-?[0-9\.]+)/g);
               if(intersects(pz.x,pz.y,pzT[0],pzT[1]  , person.x,person.y,pfT[0],pfT[1] )&& personLazy.classList.contains('sick')) {
+                  
                     setTimeout(()=>{
-                            person.classList.remove('healthy');
-                            person.classList.add('sick');
-                    },delta);
+                        person.classList.remove('healthy');
+                        person.classList.add('sick');
+                        updateInfo();
+                    }, delta);
                 }
         }
 
