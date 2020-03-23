@@ -63,8 +63,8 @@
         // Speed of this transition, rounded to 2DP
         var speed = Math.round((delta / this.pixels_per_second) * 100) / 100;
 
-        this.$object.style.transition = 'transform ' + speed + 's linear';
-        this.$object.style.transform = 'translate3d(' + next.x + 'px, ' + next.y + 'px, 0)';
+        this.$object.style.transition = `transform ${speed}s linear`;
+        this.$object.style.transform = `translate3d(${next.x}px, ${next.y}px, 0)`;
         setTimeout(()=>{
             startWatch(this,this.$object,((delta/speed)*(next.x/next.y))*(delta/speed));
         },2000);
