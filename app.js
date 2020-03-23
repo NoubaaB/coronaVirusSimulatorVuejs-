@@ -198,7 +198,7 @@
             el:"#toolbar",
             data:{
                 empty_arr: [],
-                personsLength:2,
+                personsLength: HealthyPersonsLength,
                 zeropatient : 0
             },
             methods: {
