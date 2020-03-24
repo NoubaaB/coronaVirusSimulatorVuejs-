@@ -1,65 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
 
     <title>Conrona Simulation</title>
     <style>
-        img.sick {
+      img.sick {
         width: 19px;
-        height:19px;
-        background-color:red;
-        position:absolute;
-        }
-        img.healthy {
+        height: 19px;
+        background-color: red;
+        position: absolute;
+      }
+      img.healthy {
         width: 19px;
-        height:19px;
-        background-color:green;
-        position:absolute;
-        }
+        height: 19px;
+        background-color: green;
+        position: absolute;
+      }
     </style>
-</head>
-<body style="overflow: hidden;" >
-<div id="toolbar">
-    <div class="input-group ">
+  </head>
+  <body style="overflow: hidden;">
+    <div class="wrapper" id="toolbar">
+      <div class="input-group ">
         <button class="btn btn-primary" id="start">Start</button>
         <button class="btn btn-danger" id="stop">Stop</button>
         <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-sm">Speed</span>
+          <span class="input-group-text" id="inputGroup-sizing-sm">Speed</span>
         </div>
-        <input type="number" value="250" id="speed" >
+        <input type="number" value="250" id="speed" />
         <div class="input-group-prepend">
-            <span class="input-group-text" id="peronse">Add new Healthy Perosns</span>
+          <span class="input-group-text" id="peronse"
+            >Add new Healthy Perosns</span
+          >
         </div>
-        <input type="number" v-model="personsLength" >
+        <input type="number" v-model="personsLength" />
         <div class="input-group-prepend">
-            <span class="input-group-text" id="healthyP">Number of Healthy Perosns : </span>
+          <span class="input-group-text" id="healthyP"
+            >Number of Healthy Perosns :
+          </span>
         </div>
         <div class="input-group-prepend">
-            <span class="input-group-text" id="sickP">Number of Sick Perosns : </span>
+          <span class="input-group-text" id="sickP"
+            >Number of Sick Perosns :
+          </span>
         </div>
         <div class="input-group-prepend">
-            <span class="input-group-text" >Total Perosns : {{empty_arr.length}} </span>
+          <span class="input-group-text"
+            >Total Perosns : {{empty_arr.length}}
+          </span>
         </div>
+      </div>
+
+      <div class="container">
+        <app-healthy
+          :empty_arr="empty_arr"
+          v-for="(arr,key)  in empty_arr"
+          :arr="arr"
+          :key="key"
+          v-if="key >= 1"
+        ></app-healthy>
+        <!--IF u remove <app-sick></app-sick> template , no one get sick-->
+        <app-sick :zeropatient="zeropatient"></app-sick>
+      </div>
     </div>
 
-     <div class="container">
-            <app-healthy  :empty_arr="empty_arr" v-for="(arr,key)  in empty_arr" :arr="arr" :key="key" v-if="key >= 1" ></app-healthy>
-        <!--IF u remove <app-sick></app-sick> template , no one get sick-->
-            <app-sick   :zeropatient="zeropatient" ></app-sick>
-     </div>
-
-</div>
-
-
     <script>
-        //ADD persons length you want to simulate
-        let HealthyPersonsLength = 50;
+      //ADD persons length you want to simulate
+      let HealthyPersonsLength = 50;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script  src="app.js" defer ></script>
-</body>
+    <script src="app.js" defer></script>
+  </body>
 </html>
