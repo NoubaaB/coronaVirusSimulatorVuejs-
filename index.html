@@ -12,17 +12,27 @@
 
     <title>Conrona Simulation</title>
     <style>
-      img.sick {
-        width: 19px;
-        height: 19px;
-        background-color: red;
-        position: absolute;
+      :root{
+        --app-size:19px;
+        --app-position : absolute;
       }
-      img.healthy {
-        width: 19px;
-        height: 19px;
+      *{
+        box-sizing: border-box;
+      }
+      body{
+          display: flex;
+          flex-wrap: wrap;
+      }
+      .container  >  img.sick , img.healthy {
+        width: var(--app-size);
+        height: var(--app-size);
+        position: var(--app-position);
+      }
+      .container  >  img.healthy {
         background-color: green;
-        position: absolute;
+      }
+      .container  >  img.sick {
+        background-color: red;
       }
     </style>
   </head>
