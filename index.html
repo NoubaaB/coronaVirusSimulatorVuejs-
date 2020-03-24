@@ -23,36 +23,40 @@
     </style>
 </head>
 <body style="overflow: hidden;" >
-<div id="toolbar">
-    <div class="input-group ">
-        <button class="btn btn-primary" id="start">Start</button>
-        <button class="btn btn-danger" id="stop">Stop</button>
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-sm">Speed</span>
+
+    <div id="toolbar" class="row justify-content-start">
+        <div class="col-sm-10">
+            <div class="input-group ">
+                <button class="btn btn-primary" id="start">Start</button>
+                <button class="btn btn-danger" id="stop">Stop</button>
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Speed</span>
+                </div>
+                <input type="number" value="250" id="speed">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="peronse">Add new Healthy Perosns</span>
+                </div>
+                <input type="number" v-model="personsLength">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="healthyP">Number of Healthy Perosns : </span>
+                </div>
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="sickP">Number of Sick Perosns : </span>
+                </div>
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Total Perosns : {{empty_arr.length}} </span>
+                </div>
+            </div>
         </div>
-        <input type="number" value="250" id="speed" >
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="peronse">Add new Healthy Perosns</span>
-        </div>
-        <input type="number" v-model="personsLength" >
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="healthyP">Number of Healthy Perosns : </span>
-        </div>
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="sickP">Number of Sick Perosns : </span>
-        </div>
-        <div class="input-group-prepend">
-            <span class="input-group-text" >Total Perosns : {{empty_arr.length}} </span>
+        <div class="col-sm-10">
+            <div class="container">
+                <app-healthy :empty_arr="empty_arr" v-for="(arr,key)  in empty_arr" :arr="arr" :key="key" v-if="key >= 1">
+                </app-healthy>
+                <!--IF u remove <app-sick></app-sick> template , no one get sick-->
+                <app-sick :zeropatient="zeropatient"></app-sick>
+            </div>
         </div>
     </div>
-
-     <div class="container">
-            <app-healthy  :empty_arr="empty_arr" v-for="(arr,key)  in empty_arr" :arr="arr" :key="key" v-if="key >= 1" ></app-healthy>
-        <!--IF u remove <app-sick></app-sick> template , no one get sick-->
-            <app-sick   :zeropatient="zeropatient" ></app-sick>
-     </div>
-
-</div>
 
 
     <script>
